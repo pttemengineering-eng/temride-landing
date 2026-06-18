@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daftar Jadi Driver TemRide</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #1B3A6B;
+      --navy-dark: #132d54;
+      --gold: #F59E0B;
+      --gold-hover: #d97706;
+      --bg: #f4f6fb;
+      --white: #ffffff;
+      --gray-light: #f0f2f7;
+      --gray: #6b7280;
+      --text: #1f2937;
+      --border: #d1d5db;
+      --success-bg: #ecfdf5;
+      --success-border: #6ee7b7;
+      --success-text: #065f46;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: var(--navy);
+      color: var(--white);
+      padding: 20px 16px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .header-inner {
+      max-width: 640px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+    .logo-wrap {
+      width: 52px;
+      height: 52px;
+      background: var(--gold);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+    }
+    .header-text h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .header-text p {
+      font-size: 0.85rem;
+      opacity: 0.8;
+      margin-top: 3px;
+    }
+
+    /* ── Container ── */
+    .container {
+      max-width: 640px;
+      margin: 28px auto 48px;
+      padding: 0 16px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+      padding: 28px 24px;
+    }
+
+    .section-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--gold);
+    }
+
+    /* ── Form ── */
+    .form-group {
+      margin-bottom: 18px;
+    }
+    label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+    label .req {
+      color: #ef4444;
+      margin-left: 2px;
+    }
+    input[type="text"],
+    input[type="tel"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.925rem;
+      color: var(--text);
+      background: var(--white);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    input[type="text"]:focus,
+    input[type="tel"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(27,58,107,0.12);
+    }
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%236b7280' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    /* ── Radio / inline buttons ── */
+    .radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .radio-btn {
+      position: relative;
+      flex: 1;
+      min-width: 120px;
+    }
+    .radio-btn input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .radio-btn label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      text-align: center;
+      color: var(--gray);
+    }
+    .radio-btn input[type="radio"]:checked + label {
+      border-color: var(--navy);
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    /* ── File upload ── */
+    .file-upload-wrap {
+      position: relative;
+    }
+    input[type="file"] {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px dashed var(--border);
+      border-radius: 10px;
+      font-size: 0.875rem;
+      color: var(--gray);
+      background: var(--gray-light);
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    input[type="file"]:hover {
+      border-color: var(--navy);
+    }
+    .file-hint {
+      font-size: 0.75rem;
+      color: var(--gray);
+      margin-top: 4px;
+    }
+
+    /* ── Hidden section ── */
+    .hidden { display: none; }
+
+    /* ── Divider ── */
+    .divider {
+      margin: 24px 0;
+      border: none;
+      border-top: 1.5px solid var(--gray-light);
+    }
+
+    /* ── Submit button ── */
+    .btn-submit {
+      width: 100%;
+      padding: 15px;
+      background: var(--gold);
+      color: var(--navy-dark);
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      letter-spacing: 0.02em;
+    }
+    .btn-submit:hover { background: var(--gold-hover); }
+    .btn-submit:active { transform: scale(0.98); }
+
+    /* ── Success message ── */
+    .success-card {
+      display: none;
+      background: var(--success-bg);
+      border: 1.5px solid var(--success-border);
+      border-radius: 16px;
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .success-card .check-icon {
+      font-size: 56px;
+      margin-bottom: 12px;
+    }
+    .success-card h2 {
+      font-size: 1.3rem;
+      color: var(--success-text);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .success-card p {
+      color: #047857;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .success-card .sub {
+      margin-top: 12px;
+      color: var(--gray);
+      font-size: 0.85rem;
+    }
+
+    /* ── Info box ── */
+    .info-box {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.84rem;
+      color: #1e40af;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 480px) {
+      .card { padding: 20px 16px; }
+      .header-text h1 { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo-wrap">🛵</div>
+    <div class="header-text">
+      <h1>Daftar Jadi Driver TemRide</h1>
+      <p>Bergabunglah & raih penghasilan lebih banyak</p>
+    </div>
+  </div>
+</header>
+
+<!-- ── Main Container ── -->
+<div class="container">
+
+  <!-- Success Message -->
+  <div class="success-card" id="successCard">
+    <div class="check-icon">✅</div>
+    <h2>Pendaftaran Terkirim!</h2>
+    <p>Terima kasih! Tim TemRide akan menghubungi Anda dalam <strong>1×24 jam</strong> melalui WhatsApp.</p>
+    <p class="sub">Pastikan WhatsApp Anda aktif dan dapat dihubungi.</p>
+  </div>
+
+  <!-- Registration Form -->
+  <div class="card" id="formCard">
+    <div class="info-box">
+      📋 Isi formulir di bawah dengan lengkap. Data Anda hanya digunakan untuk proses seleksi driver TemRide.
+    </div>
+
+    <form id="driverForm" novalidate>
+
+      <!-- Section 1: Data Pribadi -->
+      <div class="section-title">📋 Data Pribadi</div>
+
+      <div class="form-group">
+        <label for="nama">Nama Lengkap <span class="req">*</span></label>
+        <input type="text" id="nama" name="nama" placeholder="Sesuai KTP" required />
+      </div>
+
+      <div class="form-group">
+        <label for="wa">No WhatsApp <span class="req">*</span></label>
+        <input type="tel" id="wa" name="wa" placeholder="cth: 08123456789" required />
+      </div>
+
+      <div class="form-group">
+        <label for="kota">Kota Domisili <span class="req">*</span></label>
+        <select id="kota" name="kota" required>
+          <option value="" disabled selected>-- Pilih Kota --</option>
+          <option value="Balikpapan">Balikpapan</option>
+          <option value="Samarinda">Samarinda</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="ktp">No KTP <span class="req">*</span></label>
+        <input type="tel" id="ktp" name="ktp" placeholder="16 digit NIK" maxlength="16" required />
+      </div>
+
+      <hr class="divider" />
+
+      <!-- Section 2: Data Kendaraan -->
+      <div class="section-title">🛵 Data Kendaraan</div>
+
+      <div class="form-group">
+        <label>Punya Motor Listrik? <span class="req">*</span></label>
+        <div class="radio-group">
+          <div class="radio-btn">
+            <input type="radio" id="motorYa" name="punyaMotor" value="Ya" required />
+            <label for="motorYa">✅ Ya, punya</label>
+          </div>
+          <div class="radio-btn">
+            <input type="radio" id="motorTidak" name="punyaMotor" value="Tidak" required />
+            <label for="motorTidak">❌ Belum punya</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Jenis motor – muncul kalau Ya -->
+      <div class="form-group hidden" id="jenisMotorWrap">
+        <label for="jenisMotor">Jenis Motor Listrik <span class="req">*</span></label>
+        <select id="jenisMotor" name="jenisMotor">
+          <option value="" disabled selected>-- Pilih Jenis Motor --</option>
+          <option value="Gesits">Gesits</option>
+          <option value="Viar">Viar</option>
+          <option value="Selis">Selis</option>
+          <option value="Lainnya">Lainnya</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Pilih Skema Bergabung <span class="req">*</span></label>
+        <div class="radio-group">
+          <div class="radio-btn">
+            <input type="radio" id="skemaSendiri" name="skema" value="Punya motor sendiri" required />
+            <label for="skemaSendiri">🏍️ Motor Sendiri</label>
+          </div>
+          <div class="radio-btn">
+            <input type="radio" id="skemaKredit" name="skema" value="Kredit motor via TemRide" required />
+            <label for="skemaKredit">💳 Kredit via TemRide</label>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- Section 3: Dokumen -->
+      <div class="section-title">📄 Upload Dokumen</div>
+
+      <div class="form-group">
+        <label for="fotoKTP">Foto KTP <span class="req">*</span></label>
+        <div class="file-upload-wrap">
+          <input type="file" id="fotoKTP" name="fotoKTP" accept="image/*" required />
+        </div>
+        <p class="file-hint">Format JPG/PNG, maks. 5 MB. Pastikan teks terbaca jelas.</p>
+      </div>
+
+      <div class="form-group">
+        <label for="fotoSIM">Foto SIM <span class="req">*</span></label>
+        <div class="file-upload-wrap">
+          <input type="file" id="fotoSIM" name="fotoSIM" accept="image/*" required />
+        </div>
+        <p class="file-hint">Format JPG/PNG, maks. 5 MB. SIM C yang masih berlaku.</p>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- Section 4: Catatan -->
+      <div class="section-title">💬 Tambahan</div>
+
+      <div class="form-group">
+        <label for="catatan">Catatan (opsional)</label>
+        <textarea id="catatan" name="catatan" placeholder="Ada pertanyaan atau informasi tambahan?"></textarea>
+      </div>
+
+      <button type="submit" class="btn-submit">
+        <span>🚀</span>
+        <span>Kirim Pendaftaran via WhatsApp</span>
+      </button>
+
+    </form>
+  </div><!-- /.card -->
+
+</div><!-- /.container -->
+
+<script>
+  // Toggle "Jenis Motor" field based on "Punya Motor?" selection
+  document.querySelectorAll('input[name="punyaMotor"]').forEach(function(radio) {
+    radio.addEventListener('change', function() {
+      var wrap = document.getElementById('jenisMotorWrap');
+      var jenisSelect = document.getElementById('jenisMotor');
+      if (this.value === 'Ya') {
+        wrap.classList.remove('hidden');
+        jenisSelect.setAttribute('required', 'required');
+      } else {
+        wrap.classList.add('hidden');
+        jenisSelect.removeAttribute('required');
+        jenisSelect.value = '';
+      }
+    });
+  });
+
+  // Form submit handler
+  document.getElementById('driverForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // ── Collect values ──
+    var nama   = document.getElementById('nama').value.trim();
+    var wa     = document.getElementById('wa').value.trim();
+    var kota   = document.getElementById('kota').value;
+    var ktp    = document.getElementById('ktp').value.trim();
+    var motor  = document.querySelector('input[name="punyaMotor"]:checked');
+    var skema  = document.querySelector('input[name="skema"]:checked');
+    var jenis  = document.getElementById('jenisMotor').value;
+    var catatan = document.getElementById('catatan').value.trim();
+    var fotoKTP = document.getElementById('fotoKTP').files[0];
+    var fotoSIM = document.getElementById('fotoSIM').files[0];
+
+    // ── Basic validation ──
+    if (!nama || !wa || !kota || !ktp || !motor || !skema) {
+      alert('⚠️ Harap lengkapi semua field yang wajib diisi (*)');
+      return;
+    }
+    if (motor.value === 'Ya' && !jenis) {
+      alert('⚠️ Harap pilih jenis motor listrik Anda.');
+      return;
+    }
+    if (!fotoKTP || !fotoSIM) {
+      alert('⚠️ Harap upload foto KTP dan SIM Anda.');
+      return;
+    }
+
+    // ── Build WA message ──
+    var motorInfo = motor.value === 'Ya'
+      ? 'Ya (' + jenis + ')'
+      : 'Tidak';
+
+    var msg = [
+      '🛵 *PENDAFTARAN DRIVER TEMRIDE*',
+      '',
+      '📋 *Data Pribadi*',
+      '• Nama      : ' + nama,
+      '• WhatsApp  : ' + wa,
+      '• Kota      : ' + kota,
+      '• No KTP    : ' + ktp,
+      '',
+      '🛵 *Data Kendaraan*',
+      '• Motor Listrik : ' + motorInfo,
+      '• Skema         : ' + skema.value,
+      '',
+      '📄 *Dokumen*',
+      '• Foto KTP : ' + (fotoKTP ? fotoKTP.name : '-'),
+      '• Foto SIM : ' + (fotoSIM ? fotoSIM.name : '-'),
+      '',
+      catatan ? ('💬 *Catatan*\n' + catatan) : '',
+      '',
+      '_Dikirim via form online temride.id_'
+    ].filter(function(l) { return l !== undefined; }).join('\n');
+
+    var waNumber = '6281383058143';
+    var waUrl = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(msg);
+
+    // ── Show success UI ──
+    document.getElementById('formCard').style.display = 'none';
+    document.getElementById('successCard').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Open WhatsApp in new tab after short delay
+    setTimeout(function() {
+      window.open(waUrl, '_blank');
+    }, 600);
+  });
+</script>
+
+</body>
+</html>
