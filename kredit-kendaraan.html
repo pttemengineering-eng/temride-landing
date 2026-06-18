@@ -1,1192 +1,442 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kredit Kendaraan Listrik — TemRide</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --primary: #1B3A6B;
-      --primary-dark: #122850;
-      --accent: #4CAF50;
-      --accent-dark: #388E3C;
-      --white: #ffffff;
-      --gray-50: #f9fafb;
-      --gray-100: #f3f4f6;
-      --gray-200: #e5e7eb;
-      --gray-600: #4b5563;
-      --gray-700: #374151;
-      --gray-900: #111827;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,.1);
-      --shadow-md: 0 4px 12px rgba(0,0,0,.12);
-      --shadow-lg: 0 8px 30px rgba(0,0,0,.15);
-      --radius: 12px;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      color: var(--gray-900);
-      background: var(--white);
-      line-height: 1.6;
-    }
-
-    /* ─── NAVBAR ─── */
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: var(--primary);
-      box-shadow: var(--shadow-md);
-    }
-
-    .nav-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 64px;
-    }
-
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: .5rem;
-      text-decoration: none;
-    }
-
-    .nav-logo-icon {
-      width: 36px;
-      height: 36px;
-      background: var(--accent);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-    }
-
-    .nav-logo-text {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: var(--white);
-      letter-spacing: -.5px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 1.5rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      color: rgba(255,255,255,.85);
-      text-decoration: none;
-      font-size: .95rem;
-      font-weight: 500;
-      transition: color .2s;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active { color: var(--white); }
-
-    .nav-links a.active {
-      border-bottom: 2px solid var(--accent);
-      padding-bottom: 2px;
-    }
-
-    .nav-cta {
-      background: var(--accent);
-      color: var(--white) !important;
-      padding: .45rem 1.1rem;
-      border-radius: 8px;
-      font-weight: 600 !important;
-      transition: background .2s !important;
-    }
-
-    .nav-cta:hover { background: var(--accent-dark) !important; }
-
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      padding: 4px;
-    }
-
-    .hamburger span {
-      display: block;
-      width: 24px;
-      height: 2px;
-      background: var(--white);
-      border-radius: 2px;
-      transition: all .3s;
-    }
-
-    /* ─── HERO ─── */
-    .hero {
-      background: linear-gradient(135deg, var(--primary) 0%, #2a5298 60%, #1a6b3a 100%);
-      color: var(--white);
-      padding: 5rem 1rem 4rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-      pointer-events: none;
-    }
-
-    .hero-inner {
-      max-width: 720px;
-      margin: 0 auto;
-      position: relative;
-    }
-
-    .hero-badge {
-      display: inline-block;
-      background: rgba(76,175,80,.25);
-      border: 1px solid rgba(76,175,80,.5);
-      color: #a5d6a7;
-      font-size: .8rem;
-      font-weight: 600;
-      letter-spacing: .8px;
-      text-transform: uppercase;
-      padding: .35rem .9rem;
-      border-radius: 20px;
-      margin-bottom: 1.5rem;
-    }
-
-    .hero h1 {
-      font-size: clamp(1.8rem, 5vw, 3rem);
-      font-weight: 900;
-      line-height: 1.2;
-      margin-bottom: 1.2rem;
-    }
-
-    .hero h1 span { color: #81c784; }
-
-    .hero p {
-      font-size: 1.1rem;
-      opacity: .88;
-      margin-bottom: 2.2rem;
-      max-width: 540px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      padding: .85rem 2rem;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-weight: 700;
-      text-decoration: none;
-      cursor: pointer;
-      border: none;
-      transition: all .2s;
-    }
-
-    .btn-accent {
-      background: var(--accent);
-      color: var(--white);
-      box-shadow: 0 4px 15px rgba(76,175,80,.4);
-    }
-
-    .btn-accent:hover {
-      background: var(--accent-dark);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(76,175,80,.5);
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--white);
-      border: 2px solid rgba(255,255,255,.6);
-    }
-
-    .btn-outline:hover {
-      background: rgba(255,255,255,.1);
-      border-color: var(--white);
-    }
-
-    .hero-stats {
-      display: flex;
-      gap: 2.5rem;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 3rem;
-      padding-top: 2.5rem;
-      border-top: 1px solid rgba(255,255,255,.15);
-    }
-
-    .stat { text-align: center; }
-
-    .stat-value {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: #81c784;
-    }
-
-    .stat-label { font-size: .8rem; opacity: .75; margin-top: .2rem; }
-
-    /* ─── SECTIONS ─── */
-    section { padding: 4rem 1rem; }
-
-    .section-header { text-align: center; margin-bottom: 3rem; }
-
-    .section-tag {
-      display: inline-block;
-      background: rgba(27,58,107,.08);
-      color: var(--primary);
-      font-size: .75rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      padding: .3rem .8rem;
-      border-radius: 20px;
-      margin-bottom: .8rem;
-    }
-
-    .section-header h2 {
-      font-size: clamp(1.5rem, 4vw, 2.2rem);
-      font-weight: 800;
-      color: var(--primary);
-      margin-bottom: .6rem;
-    }
-
-    .section-header p {
-      color: var(--gray-600);
-      max-width: 520px;
-      margin: 0 auto;
-    }
-
-    .container { max-width: 1100px; margin: 0 auto; }
-
-    /* ─── PAKET CARDS ─── */
-    .paket-section { background: var(--gray-50); }
-
-    .paket-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .paket-card {
-      background: var(--white);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-md);
-      overflow: hidden;
-      transition: transform .25s, box-shadow .25s;
-      position: relative;
-    }
-
-    .paket-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .paket-card.featured {
-      border: 2px solid var(--accent);
-    }
-
-    .badge-popular {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: var(--accent);
-      color: var(--white);
-      font-size: .7rem;
-      font-weight: 700;
-      padding: .25rem .65rem;
-      border-radius: 20px;
-      letter-spacing: .5px;
-    }
-
-    .paket-header {
-      padding: 1.5rem 1.5rem 1rem;
-      background: linear-gradient(135deg, var(--primary), #2a5298);
-      color: var(--white);
-    }
-
-    .paket-icon { font-size: 2rem; margin-bottom: .5rem; }
-
-    .paket-header h3 { font-size: 1.2rem; font-weight: 700; }
-
-    .paket-header .otr {
-      font-size: .85rem;
-      opacity: .8;
-      margin-top: .2rem;
-    }
-
-    .paket-header .otr strong { font-size: 1.3rem; color: #81c784; }
-
-    .paket-body { padding: 1.5rem; }
-
-    .paket-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: .6rem 0;
-      border-bottom: 1px solid var(--gray-100);
-      font-size: .9rem;
-    }
-
-    .paket-row:last-child { border-bottom: none; }
-
-    .paket-row .label { color: var(--gray-600); }
-
-    .paket-row .value { font-weight: 700; color: var(--primary); }
-
-    .paket-row .value.highlight { color: var(--accent-dark); font-size: 1rem; }
-
-    .paket-footer { padding: 0 1.5rem 1.5rem; }
-
-    .btn-paket {
-      display: block;
-      width: 100%;
-      text-align: center;
-      padding: .75rem;
-      border-radius: 8px;
-      font-size: .95rem;
-      font-weight: 700;
-      text-decoration: none;
-      background: var(--primary);
-      color: var(--white);
-      transition: background .2s;
-    }
-
-    .btn-paket:hover { background: var(--primary-dark); }
-
-    .paket-card.featured .btn-paket { background: var(--accent); }
-    .paket-card.featured .btn-paket:hover { background: var(--accent-dark); }
-
-    /* ─── KALKULATOR ─── */
-    .kalkulator-section { background: var(--white); }
-
-    .kalkulator-box {
-      max-width: 680px;
-      margin: 0 auto;
-      background: var(--white);
-      border: 2px solid var(--gray-200);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-md);
-      overflow: hidden;
-    }
-
-    .kalkulator-top {
-      background: linear-gradient(135deg, var(--primary), #2a5298);
-      padding: 1.5rem 2rem;
-      color: var(--white);
-    }
-
-    .kalkulator-top h3 { font-size: 1.2rem; font-weight: 700; }
-    .kalkulator-top p { font-size: .85rem; opacity: .8; margin-top: .3rem; }
-
-    .kalkulator-form { padding: 1.5rem 2rem; }
-
-    .form-group { margin-bottom: 1.2rem; }
-
-    .form-group label {
-      display: block;
-      font-size: .9rem;
-      font-weight: 600;
-      color: var(--gray-700);
-      margin-bottom: .4rem;
-    }
-
-    .form-group select,
-    .form-group input {
-      width: 100%;
-      padding: .7rem 1rem;
-      border: 2px solid var(--gray-200);
-      border-radius: 8px;
-      font-size: .95rem;
-      color: var(--gray-900);
-      background: var(--white);
-      outline: none;
-      transition: border-color .2s;
-      font-family: inherit;
-    }
-
-    .form-group select:focus,
-    .form-group input:focus { border-color: var(--primary); }
-
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-
-    .btn-hitung {
-      width: 100%;
-      padding: .85rem;
-      background: var(--accent);
-      color: var(--white);
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background .2s;
-      font-family: inherit;
-    }
-
-    .btn-hitung:hover { background: var(--accent-dark); }
-
-    .kalkulator-result {
-      margin: 1.5rem 2rem;
-      padding: 1.2rem;
-      background: var(--gray-50);
-      border-radius: 8px;
-      border-left: 4px solid var(--accent);
-      display: none;
-    }
-
-    .kalkulator-result.show { display: block; }
-
-    .result-row {
-      display: flex;
-      justify-content: space-between;
-      padding: .4rem 0;
-      font-size: .9rem;
-    }
-
-    .result-row.total {
-      border-top: 1px solid var(--gray-200);
-      margin-top: .5rem;
-      padding-top: .8rem;
-      font-size: 1.05rem;
-      font-weight: 700;
-    }
-
-    .result-row.total .val { color: var(--accent-dark); font-size: 1.2rem; }
-
-    .result-note {
-      font-size: .78rem;
-      color: var(--gray-600);
-      margin-top: .8rem;
-      line-height: 1.5;
-    }
-
-    /* ─── CARA KERJA ─── */
-    .cara-section { background: var(--gray-50); }
-
-    .steps-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.5rem;
-      position: relative;
-    }
-
-    .step-card {
-      background: var(--white);
-      border-radius: var(--radius);
-      padding: 2rem 1.5rem;
-      text-align: center;
-      box-shadow: var(--shadow-sm);
-      position: relative;
-    }
-
-    .step-number {
-      width: 52px;
-      height: 52px;
-      background: var(--primary);
-      color: var(--white);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      font-weight: 800;
-      margin: 0 auto 1rem;
-    }
-
-    .step-icon { font-size: 2.2rem; margin-bottom: .8rem; }
-
-    .step-card h4 {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: .5rem;
-    }
-
-    .step-card p { font-size: .85rem; color: var(--gray-600); }
-
-    .step-arrow {
-      position: absolute;
-      right: -1.1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.5rem;
-      color: var(--accent);
-      z-index: 1;
-    }
-
-    /* ─── SYARAT ─── */
-    .syarat-section { background: var(--white); }
-
-    .syarat-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1rem;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .syarat-item {
-      display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-      background: var(--gray-50);
-      border-radius: 10px;
-      padding: 1.2rem;
-      border-left: 3px solid var(--accent);
-    }
-
-    .syarat-icon {
-      width: 40px;
-      height: 40px;
-      background: rgba(76,175,80,.15);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      flex-shrink: 0;
-    }
-
-    .syarat-text h4 { font-size: .95rem; font-weight: 700; color: var(--primary); }
-    .syarat-text p { font-size: .82rem; color: var(--gray-600); margin-top: .2rem; }
-
-    /* ─── FAQ ─── */
-    .faq-section { background: var(--gray-50); }
-
-    .faq-list { max-width: 740px; margin: 0 auto; display: flex; flex-direction: column; gap: .75rem; }
-
-    .faq-item {
-      background: var(--white);
-      border-radius: 10px;
-      box-shadow: var(--shadow-sm);
-      overflow: hidden;
-    }
-
-    .faq-question {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-      padding: 1.1rem 1.5rem;
-      background: none;
-      border: none;
-      font-family: inherit;
-      font-size: .95rem;
-      font-weight: 600;
-      color: var(--primary);
-      cursor: pointer;
-      text-align: left;
-      transition: background .2s;
-    }
-
-    .faq-question:hover { background: var(--gray-50); }
-
-    .faq-chevron {
-      flex-shrink: 0;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: var(--gray-100);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: .8rem;
-      transition: transform .3s, background .2s;
-    }
-
-    .faq-item.open .faq-chevron {
-      transform: rotate(180deg);
-      background: var(--accent);
-      color: var(--white);
-    }
-
-    .faq-answer {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height .35s ease, padding .3s;
-      font-size: .88rem;
-      color: var(--gray-600);
-      line-height: 1.7;
-    }
-
-    .faq-item.open .faq-answer { max-height: 300px; }
-
-    .faq-answer-inner { padding: 0 1.5rem 1.2rem; }
-
-    /* ─── CTA SECTION ─── */
-    .cta-section {
-      background: linear-gradient(135deg, var(--primary), #2a5298);
-      color: var(--white);
-      text-align: center;
-    }
-
-    .cta-section h2 {
-      font-size: clamp(1.5rem, 4vw, 2.2rem);
-      font-weight: 800;
-      margin-bottom: .8rem;
-    }
-
-    .cta-section p {
-      opacity: .85;
-      max-width: 480px;
-      margin: 0 auto 2rem;
-    }
-
-    .cta-section .btn-accent {
-      font-size: 1.1rem;
-      padding: 1rem 2.5rem;
-    }
-
-    /* ─── FOOTER ─── */
-    footer {
-      background: var(--gray-900);
-      color: rgba(255,255,255,.7);
-      padding: 2rem 1rem;
-    }
-
-    .footer-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .footer-brand .nav-logo-text { color: var(--white); font-size: 1.2rem; }
-
-    .footer-brand p { font-size: .8rem; opacity: .6; margin-top: .3rem; }
-
-    .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
-
-    .footer-links a {
-      color: rgba(255,255,255,.6);
-      text-decoration: none;
-      font-size: .85rem;
-      transition: color .2s;
-    }
-
-    .footer-links a:hover { color: var(--white); }
-
-    .footer-copy { font-size: .8rem; opacity: .5; text-align: center; width: 100%; margin-top: .5rem; }
-
-    /* ─── MOBILE ─── */
-    @media (max-width: 768px) {
-      .nav-links { display: none; flex-direction: column; }
-      .nav-links.open { display: flex; position: absolute; top: 64px; left: 0; right: 0; background: var(--primary-dark); padding: 1rem; gap: .5rem; z-index: 999; }
-      .hamburger { display: flex; }
-      .form-row { grid-template-columns: 1fr; }
-      .kalkulator-form, .kalkulator-result { padding: 1.2rem; }
-      .hero-stats { gap: 1.5rem; }
-      .step-arrow { display: none; }
-      .steps-grid { grid-template-columns: 1fr 1fr; }
-    }
-
-    @media (max-width: 480px) {
-      .steps-grid { grid-template-columns: 1fr; }
-      .paket-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kredit Kendaraan Listrik — TemRide</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary: #1B3A6B;
+    --primary-light: #2a5298;
+    --accent: #4CAF50;
+    --accent-dark: #388E3C;
+    --bg: #F8FAFC;
+    --card-bg: #ffffff;
+    --text: #1a202c;
+    --text-muted: #718096;
+    --border: #e2e8f0;
+    --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+  nav { background: var(--primary); padding: 0 1rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+  .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-logo { color: #fff; font-size: 1.5rem; font-weight: 800; text-decoration: none; letter-spacing: -0.5px; }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 1.5rem; }
+  .nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta { background: var(--accent); color: #fff; padding: 0.45rem 1.1rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.88rem; transition: background 0.2s; }
+  .nav-cta:hover { background: var(--accent-dark); }
+
+  .hero { background: linear-gradient(135deg, var(--primary) 0%, #2a5298 50%, #1a6b3a 100%); color: #fff; padding: 5rem 1rem 4rem; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+  .hero-badge { display: inline-block; background: rgba(76,175,80,0.25); border: 1px solid rgba(76,175,80,0.6); color: #a5f3a8; padding: 0.3rem 0.9rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 1.2rem; text-transform: uppercase; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.15; margin-bottom: 1.2rem; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+  .hero h1 span { color: #7de87d; }
+  .hero p { font-size: 1.15rem; opacity: 0.9; max-width: 600px; margin: 0 auto 2rem; }
+  .hero-stats { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem; }
+  .hero-stat { text-align: center; }
+  .hero-stat .num { font-size: 1.8rem; font-weight: 800; color: #7de87d; line-height: 1; }
+  .hero-stat .lbl { font-size: 0.78rem; opacity: 0.75; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 0.2rem; }
+  .btn-hero { display: inline-block; background: var(--accent); color: #fff; padding: 0.85rem 2.2rem; border-radius: 8px; text-decoration: none; font-size: 1.05rem; font-weight: 700; transition: all 0.2s; box-shadow: 0 4px 15px rgba(76,175,80,0.4); margin-right: 0.8rem; margin-bottom: 0.5rem; }
+  .btn-hero:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(76,175,80,0.5); background: var(--accent-dark); }
+  .btn-hero-outline { display: inline-block; background: transparent; color: #fff; padding: 0.85rem 2rem; border-radius: 8px; text-decoration: none; font-size: 1.05rem; font-weight: 600; border: 2px solid rgba(255,255,255,0.5); transition: all 0.2s; margin-bottom: 0.5rem; }
+  .btn-hero-outline:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
+  section { padding: 4rem 1rem; }
+  .section-title { text-align: center; margin-bottom: 0.8rem; }
+  .section-title h2 { font-size: 2rem; font-weight: 800; color: var(--primary); }
+  .section-subtitle { text-align: center; color: var(--text-muted); font-size: 1.05rem; margin-bottom: 3rem; }
+
+  .paket-section { background: #fff; }
+  .paket-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; max-width: 1000px; margin: 0 auto; }
+  .paket-card { border: 2px solid var(--border); border-radius: 16px; padding: 2rem 1.5rem; background: var(--card-bg); position: relative; transition: all 0.3s; overflow: hidden; }
+  .paket-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--primary-light); }
+  .paket-card.featured { border-color: var(--accent); background: linear-gradient(145deg, #f0fff0, #fff); }
+  .paket-card.featured::before { content: 'TERPOPULER'; position: absolute; top: 0; right: 0; background: var(--accent); color: #fff; font-size: 0.7rem; font-weight: 700; padding: 0.35rem 0.8rem; border-radius: 0 14px 0 10px; letter-spacing: 0.5px; }
+  .paket-icon { font-size: 2.8rem; margin-bottom: 0.8rem; }
+  .paket-name { font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 0.4rem; }
+  .paket-harga { font-size: 1.9rem; font-weight: 800; color: var(--text); margin-bottom: 0.3rem; }
+  .paket-harga sub { font-size: 0.85rem; font-weight: 500; color: var(--text-muted); }
+  .paket-divider { border: none; border-top: 1px solid var(--border); margin: 1.2rem 0; }
+  .paket-detail { list-style: none; margin-bottom: 1.5rem; }
+  .paket-detail li { padding: 0.35rem 0; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem; }
+  .paket-detail li::before { content: '\2713'; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+  .paket-detail li strong { color: var(--primary); }
+  .btn-paket { display: block; width: 100%; text-align: center; background: var(--primary); color: #fff; padding: 0.8rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: background 0.2s; }
+  .paket-card.featured .btn-paket { background: var(--accent); }
+  .btn-paket:hover { opacity: 0.9; }
+
+  .kalkulator-section { background: linear-gradient(135deg, #f0f7ff 0%, #e8f5e9 100%); }
+  .kalk-wrapper { max-width: 720px; margin: 0 auto; background: #fff; border-radius: 20px; padding: 2.5rem; box-shadow: var(--shadow-lg); }
+  .kalk-title { font-size: 1.4rem; font-weight: 700; color: var(--primary); margin-bottom: 0.4rem; text-align: center; }
+  .kalk-subtitle { text-align: center; color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem; }
+  .kalk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.5rem; }
+  @media (max-width: 500px) { .kalk-grid { grid-template-columns: 1fr; } }
+  .kalk-field label { display: block; font-weight: 600; font-size: 0.9rem; color: var(--primary); margin-bottom: 0.4rem; }
+  .kalk-field select, .kalk-field input { width: 100%; padding: 0.7rem 1rem; border: 2px solid var(--border); border-radius: 8px; font-size: 1rem; transition: border-color 0.2s; appearance: none; background: #f9fafb; }
+  .kalk-field select:focus, .kalk-field input:focus { outline: none; border-color: var(--accent); background: #fff; }
+  .kalk-btn { width: 100%; padding: 0.9rem; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-size: 1.05rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+  .kalk-btn:hover { background: var(--accent-dark); }
+  .kalk-result { margin-top: 1.8rem; padding: 1.5rem; background: var(--primary); border-radius: 12px; display: none; }
+  .kalk-result.show { display: block; }
+  .kalk-result h3 { color: #7de87d; font-size: 1rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  .result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  @media (max-width: 500px) { .result-grid { grid-template-columns: 1fr; } }
+  .result-item { text-align: center; }
+  .result-item .r-label { color: rgba(255,255,255,0.7); font-size: 0.78rem; margin-bottom: 0.3rem; }
+  .result-item .r-value { color: #fff; font-size: 1.3rem; font-weight: 800; }
+  .result-item .r-value.green { color: #7de87d; }
+  .result-item .r-value.yellow { color: #ffd84d; }
+  .kalk-note { margin-top: 1rem; color: rgba(255,255,255,0.6); font-size: 0.8rem; text-align: center; }
+
+  .steps-section { background: #fff; }
+  .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; max-width: 960px; margin: 0 auto; }
+  .step-card { text-align: center; padding: 1.5rem; }
+  .step-num { width: 56px; height: 56px; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 800; margin: 0 auto 1rem; }
+  .step-card h3 { font-size: 1.1rem; color: var(--primary); font-weight: 700; margin-bottom: 0.5rem; }
+  .step-card p { color: var(--text-muted); font-size: 0.93rem; }
+
+  .syarat-section { background: var(--bg); }
+  .syarat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; max-width: 800px; margin: 0 auto; }
+  @media (max-width: 600px) { .syarat-grid { grid-template-columns: 1fr; } }
+  .syarat-card { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: var(--shadow); border-left: 4px solid var(--accent); }
+  .syarat-card h3 { color: var(--primary); font-size: 1rem; font-weight: 700; margin-bottom: 0.8rem; }
+  .syarat-card ul { list-style: none; }
+  .syarat-card ul li { padding: 0.3rem 0; font-size: 0.92rem; color: var(--text); display: flex; align-items: flex-start; gap: 0.5rem; }
+  .syarat-card ul li::before { content: '\1F4CB'; font-size: 0.85rem; flex-shrink: 0; margin-top: 0.1rem; }
+
+  .faq-section { background: #fff; }
+  .faq-wrapper { max-width: 760px; margin: 0 auto; }
+  .faq-item { border: 1px solid var(--border); border-radius: 10px; margin-bottom: 0.8rem; overflow: hidden; }
+  .faq-question { width: 100%; padding: 1.1rem 1.3rem; background: #f9fafb; border: none; text-align: left; font-size: 0.98rem; font-weight: 600; color: var(--primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
+  .faq-question:hover { background: #f0f4ff; }
+  .faq-question .faq-icon { font-size: 1.2rem; transition: transform 0.3s; flex-shrink: 0; margin-left: 1rem; }
+  .faq-question.open .faq-icon { transform: rotate(45deg); }
+  .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.3s; padding: 0 1.3rem; font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; }
+  .faq-answer.open { max-height: 300px; padding: 1rem 1.3rem; }
+
+  .cta-section { background: linear-gradient(135deg, var(--primary) 0%, #2a5298 100%); color: #fff; text-align: center; padding: 5rem 1rem; }
+  .cta-section h2 { font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem; }
+  .cta-section p { font-size: 1.1rem; opacity: 0.85; max-width: 520px; margin: 0 auto 2.5rem; }
+  .cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-cta-primary { background: var(--accent); color: #fff; padding: 1rem 2.5rem; border-radius: 10px; text-decoration: none; font-size: 1.1rem; font-weight: 700; transition: all 0.2s; box-shadow: 0 4px 15px rgba(76,175,80,0.4); }
+  .btn-cta-primary:hover { background: var(--accent-dark); transform: translateY(-2px); }
+  .btn-cta-wa { background: #25D366; color: #fff; padding: 1rem 2rem; border-radius: 10px; text-decoration: none; font-size: 1.05rem; font-weight: 600; transition: all 0.2s; }
+  .btn-cta-wa:hover { background: #128C7E; transform: translateY(-2px); }
+
+  footer { background: #0f2044; color: rgba(255,255,255,0.7); padding: 2rem 1rem; text-align: center; }
+  footer .footer-logo { color: #fff; font-size: 1.3rem; font-weight: 800; margin-bottom: 0.5rem; }
+  footer .footer-logo span { color: var(--accent); }
+  footer p { font-size: 0.85rem; }
+  footer a { color: var(--accent); text-decoration: none; }
+  @media (max-width: 640px) { .nav-links { display: none; } .hero { padding: 3.5rem 1rem 3rem; } }
+</style>
 </head>
 <body>
 
-<!-- ══════════════ NAVBAR ══════════════ -->
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">
-      <div class="nav-logo-icon">⚡</div>
-      <span class="nav-logo-text">TemRide</span>
-    </a>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="index.html">Beranda</a></li>
-      <li><a href="kredit-kendaraan.html" class="active">Kredit Kendaraan</a></li>
-      <li><a href="daftar-driver.html" class="nav-cta">Daftar Driver</a></li>
-    </ul>
-    <div class="hamburger" id="hamburger" onclick="toggleNav()">
-      <span></span><span></span><span></span>
+    <a href="index.html" class="nav-logo">Tem<span>Ride</span></a>
+    <div class="nav-links">
+      <a href="index.html">Beranda</a>
+      <a href="#paket">Paket Kredit</a>
+      <a href="#kalkulator">Kalkulator</a>
+      <a href="#syarat">Syarat</a>
+      <a href="#faq">FAQ</a>
     </div>
+    <a href="daftar-driver.html" class="nav-cta">Daftar Driver</a>
   </div>
 </nav>
 
-<!-- ══════════════ HERO ══════════════ -->
 <section class="hero">
-  <div class="hero-inner">
-    <div class="hero-badge">✦ Program Kredit Khusus Driver TemRide</div>
-    <h1>Miliki <span>Motor/Mobil Listrik</span> —<br>Cicil dari Pendapatan Harian</h1>
-    <p>Tidak perlu tabungan besar. Cicilan dipotong otomatis dari penghasilan kamu setiap hari. Makin banyak trip, makin cepat lunas.</p>
-    <div class="hero-actions">
-      <a href="#paket" class="btn btn-accent">🚀 Ajukan Sekarang</a>
-      <a href="#cara-kerja" class="btn btn-outline">📋 Pelajari Cara Kerja</a>
-    </div>
-    <div class="hero-stats">
-      <div class="stat">
-        <div class="stat-value">3</div>
-        <div class="stat-label">Pilihan Paket</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value">0%</div>
-        <div class="stat-label">Bunga Tahun Pertama*</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value">24h</div>
-        <div class="stat-label">Proses Persetujuan</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value">Rp 2jt</div>
-        <div class="stat-label">DP Mulai Dari</div>
-      </div>
-    </div>
+  <div class="hero-badge">Program Kredit Kendaraan Listrik 2026</div>
+  <h1>Miliki Motor &amp; Mobil Listrik,<br><span>Cicil dari Pendapatan Harian</span></h1>
+  <p>Bergabung sebagai driver TemRide dan dapatkan kendaraan listrik impianmu dengan cicilan yang disesuaikan dengan penghasilan harianmu. Tanpa bunga berlebih, tanpa kerumitan.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">0%</div><div class="lbl">Biaya Admin</div></div>
+    <div class="hero-stat"><div class="num">Rp 2 Jt</div><div class="lbl">DP Motor Mulai</div></div>
+    <div class="hero-stat"><div class="num">24-36</div><div class="lbl">Bulan Cicilan</div></div>
+    <div class="hero-stat"><div class="num">200+</div><div class="lbl">Driver Aktif</div></div>
   </div>
+  <a href="#paket" class="btn-hero">Lihat Paket Kredit</a>
+  <a href="#kalkulator" class="btn-hero-outline">Hitung Cicilan Saya</a>
 </section>
 
-<!-- ══════════════ PAKET ══════════════ -->
-<section class="paket-section" id="paket">
+<section id="paket" class="paket-section">
   <div class="container">
-    <div class="section-header">
-      <div class="section-tag">Paket Kredit</div>
-      <h2>Pilih Kendaraan yang Tepat</h2>
-      <p>Tiga pilihan paket kredit kendaraan listrik sesuai kebutuhan dan kemampuan cicilan kamu.</p>
-    </div>
+    <div class="section-title"><h2>Pilih Paket Kendaraan Listrik</h2></div>
+    <p class="section-subtitle">Tiga paket fleksibel disesuaikan dengan kebutuhan dan kemampuan finansialmu</p>
     <div class="paket-grid">
-
-      <!-- Motor Standar -->
       <div class="paket-card">
-        <div class="paket-header">
-          <div class="paket-icon">🛵</div>
-          <h3>Motor Standar</h3>
-          <div class="otr">Harga OTR <strong>Rp 18.000.000</strong></div>
-        </div>
-        <div class="paket-body">
-          <div class="paket-row">
-            <span class="label">Uang Muka (DP)</span>
-            <span class="value">Rp 2.000.000</span>
-          </div>
-          <div class="paket-row">
-            <span class="label">Cicilan / bulan</span>
-            <span class="value">Rp 800.000</span>
-          </div>
-          <div class="paket-row">
-            <span class="label">Tenor</span>
-            <span class="value">24 bulan</span>
-          </div>
-          <div class="paket-row">
-            <span class="label">Potongan / hari</span>
-            <span class="value highlight">Rp 26.700</span>
-          </div>
-        </div>
-        <div class="paket-footer">
-          <a href="daftar-driver.html" class="btn-paket">Pilih Paket Ini</a>
-        </div>
+        <div class="paket-icon">&#x1F6F5;</div>
+        <div class="paket-name">Motor Standar</div>
+        <div class="paket-harga">Rp 18 Juta <sub>harga kendaraan</sub></div>
+        <hr class="paket-divider">
+        <ul class="paket-detail">
+          <li>DP awal <strong>Rp 2.000.000</strong></li>
+          <li>Cicilan <strong>Rp 800.000 / bulan</strong></li>
+          <li>Tenor <strong>24 bulan</strong></li>
+          <li>Cicilan harian <strong>Rp 26.700 / hari</strong></li>
+          <li>Jarak tempuh <strong>60-80 km / charge</strong></li>
+          <li>Motor: <strong>Gesits / Selis / Volta</strong></li>
+          <li>Garansi baterai <strong>2 tahun</strong></li>
+          <li>Cocok untuk <strong>GoRide &amp; TemSend</strong></li>
+        </ul>
+        <a href="daftar-driver.html?paket=motor-standar" class="btn-paket">Pilih Paket Ini</a>
       </div>
-
-      <!-- Motor Premium -->
       <div class="paket-card featured">
-        <div class="badge-popular">⭐ Populer</div>
-        <div class="paket-header">
-          <div class="paket-icon">⚡</div>
-          <h3>Motor Premium</h3>
-          <div class="otr">Harga OTR <strong>Rp 28.000.000</strong></div>
-        </div>
-        <div class="paket-body">
-          <div class="paket-row">
-            <span class="label">Uang Muka (DP)</span>
-            <span class="value">Rp 5.000.000</span>
-          </div>
-          <div class="paket-row">
-            <span class="label">Cicilan / bulan</span>
-            <span class="value">Rp 1.200.000</span>
-          </div>
-          <div class="paket-row">
-            <span class="label">Tenor</span>
-            <span class="value">24 bulan</span>
-          </div>
-          <div class="paket-row">
-            <span class="label">Potongan / hari</span>
-            <span class="value highlight">Rp 40.000</span>
-          </div>
-        </div>
-        <div class="paket-footer">
-          <a href="daftar-driver.html" class="btn-paket">Pilih Paket Ini</a>
-        </div>
+        <div class="paket-icon">&#x26A1;</div>
+        <div class="paket-name">Motor Premium</div>
+        <div class="paket-harga">Rp 28 Juta <sub>harga kendaraan</sub></div>
+        <hr class="paket-divider">
+        <ul class="paket-detail">
+          <li>DP awal <strong>Rp 5.000.000</strong></li>
+          <li>Cicilan <strong>Rp 1.200.000 / bulan</strong></li>
+          <li>Tenor <strong>24 bulan</strong></li>
+          <li>Cicilan harian <strong>Rp 40.000 / hari</strong></li>
+          <li>Jarak tempuh <strong>100-120 km / charge</strong></li>
+          <li>Motor: <strong>Alva / Rakata / Maka</strong></li>
+          <li>Garansi baterai <strong>3 tahun</strong></li>
+          <li>Cocok untuk <strong>GoRide Premium</strong></li>
+        </ul>
+        <a href="daftar-driver.html?paket=motor-premium" class="btn-paket">Pilih Paket Ini</a>
       </div>
-
-      <!-- Mobil Listrik -->
       <div class="paket-card">
-        <div class="paket-header">
-          <div class="paket-icon">🚗</div>
-          <h3>Mobil Listrik</h3>
-          <div class="otr">Harga OTR <strong>Rp 150.000.000</strong></div>
-        </div>
-        <div class="paket-body">
-          <div class="paket-row">
-            <span class="label">Uang Muka (DP)</span>
-            <span class="value">Rp 15.000.000</span>
-          </div>
-          <div class="paket-row">
-            <span class="label">Cicilan / bulan</span>
-            <span class="value">Rp 3.500.000</span>
-          </div>
-          <div class="paket-row">
-            <span class="label">Tenor</span>
-            <span class="value">36 bulan</span>
-          </div>
-          <div class="paket-row">
-            <span class="label">Potongan / hari</span>
-            <span class="value highlight">Rp 116.700</span>
-          </div>
-        </div>
-        <div class="paket-footer">
-          <a href="daftar-driver.html" class="btn-paket">Pilih Paket Ini</a>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════ KALKULATOR ══════════════ -->
-<section class="kalkulator-section" id="kalkulator">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-tag">Kalkulator</div>
-      <h2>Hitung Pendapatan Bersih Kamu</h2>
-      <p>Masukkan target pendapatan harian dan pilih paket kredit untuk melihat estimasi penghasilan bersih.</p>
-    </div>
-    <div class="kalkulator-box">
-      <div class="kalkulator-top">
-        <h3>🧮 Kalkulator Pendapatan Bersih</h3>
-        <p>Estimasi setelah potongan cicilan harian otomatis</p>
-      </div>
-      <div class="kalkulator-form">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="targetPendapatan">Target Pendapatan per Hari (Rp)</label>
-            <input type="number" id="targetPendapatan" placeholder="Contoh: 300000" min="0" />
-          </div>
-          <div class="form-group">
-            <label for="pilihanPaket">Pilih Paket Kredit</label>
-            <select id="pilihanPaket">
-              <option value="">-- Pilih Paket --</option>
-              <option value="26700">Motor Standar — Rp 26.700/hari</option>
-              <option value="40000">Motor Premium — Rp 40.000/hari</option>
-              <option value="116700">Mobil Listrik — Rp 116.700/hari</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="jumlahTrip">Estimasi Trip per Hari</label>
-          <input type="number" id="jumlahTrip" placeholder="Contoh: 15" min="0" />
-        </div>
-        <button class="btn-hitung" onclick="hitungPendapatan()">⚡ Hitung Sekarang</button>
-      </div>
-      <div class="kalkulator-result" id="hasilKalkulator">
-        <div class="result-row">
-          <span>💰 Pendapatan Kotor per Hari</span>
-          <span class="val" id="res-gross">Rp 0</span>
-        </div>
-        <div class="result-row">
-          <span>➖ Potongan Cicilan Harian</span>
-          <span class="val" id="res-cicil" style="color:#e53935;">- Rp 0</span>
-        </div>
-        <div class="result-row">
-          <span>➖ Estimasi Biaya Operasional (15%)</span>
-          <span class="val" id="res-ops" style="color:#e53935;">- Rp 0</span>
-        </div>
-        <div class="result-row total">
-          <span>✅ Pendapatan Bersih per Hari</span>
-          <span class="val" id="res-bersih">Rp 0</span>
-        </div>
-        <div class="result-row" style="margin-top:.3rem;">
-          <span style="color:var(--gray-600);">📅 Estimasi per Bulan (30 hari)</span>
-          <span class="val" id="res-bulan" style="font-weight:600;">Rp 0</span>
-        </div>
-        <p class="result-note">* Estimasi perhitungan. Pendapatan aktual tergantung pada jumlah trip, jarak, dan kondisi aktual. Biaya operasional mencakup listrik, perawatan ringan, dll.</p>
+        <div class="paket-icon">&#x1F697;</div>
+        <div class="paket-name">Mobil Listrik</div>
+        <div class="paket-harga">Rp 150 Juta <sub>harga kendaraan</sub></div>
+        <hr class="paket-divider">
+        <ul class="paket-detail">
+          <li>DP awal <strong>Rp 15.000.000</strong></li>
+          <li>Cicilan <strong>Rp 3.500.000 / bulan</strong></li>
+          <li>Tenor <strong>36 bulan</strong></li>
+          <li>Cicilan harian <strong>Rp 116.700 / hari</strong></li>
+          <li>Jarak tempuh <strong>200-300 km / charge</strong></li>
+          <li>Mobil: <strong>Wuling Air EV / BYD Dolphin</strong></li>
+          <li>Garansi baterai <strong>5 tahun</strong></li>
+          <li>Cocok untuk <strong>GoCar EV &amp; Taksi</strong></li>
+        </ul>
+        <a href="daftar-driver.html?paket=mobil-listrik" class="btn-paket">Pilih Paket Ini</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════ CARA KERJA ══════════════ -->
-<section class="cara-section" id="cara-kerja">
+<section id="kalkulator" class="kalkulator-section">
   <div class="container">
-    <div class="section-header">
-      <div class="section-tag">Cara Kerja</div>
-      <h2>4 Langkah Mudah Miliki Kendaraan</h2>
-      <p>Proses cepat, transparan, dan tanpa kerumitan birokrasi berlebih.</p>
+    <div class="kalk-wrapper">
+      <div class="kalk-title">Kalkulator Cicilan Interaktif</div>
+      <div class="kalk-subtitle">Masukkan target pendapatanmu dan lihat estimasi cicilan + penghasilan bersih</div>
+      <div class="kalk-grid">
+        <div class="kalk-field">
+          <label for="paketSelect">Pilih Paket Kendaraan</label>
+          <select id="paketSelect">
+            <option value="800000">Motor Standar - Rp 800rb/bln</option>
+            <option value="1200000" selected>Motor Premium - Rp 1.2jt/bln</option>
+            <option value="3500000">Mobil Listrik - Rp 3.5jt/bln</option>
+          </select>
+        </div>
+        <div class="kalk-field">
+          <label for="pendapatan">Target Pendapatan / Hari (Rp)</label>
+          <input type="number" id="pendapatan" placeholder="Contoh: 300000" value="300000" min="0">
+        </div>
+        <div class="kalk-field">
+          <label for="hariKerja">Hari Kerja / Bulan</label>
+          <select id="hariKerja">
+            <option value="22">22 hari (standar)</option>
+            <option value="25" selected>25 hari</option>
+            <option value="28">28 hari</option>
+            <option value="30">30 hari</option>
+          </select>
+        </div>
+        <div class="kalk-field">
+          <label for="komisi">Komisi Platform TemRide (%)</label>
+          <select id="komisi">
+            <option value="15">15%</option>
+            <option value="20" selected>20% (reguler)</option>
+            <option value="25">25%</option>
+          </select>
+        </div>
+      </div>
+      <button class="kalk-btn" onclick="hitungCicilan()">Hitung Sekarang</button>
+      <div class="kalk-result" id="kalkResult">
+        <h3>Estimasi Penghasilanmu</h3>
+        <div class="result-grid">
+          <div class="result-item"><div class="r-label">Pendapatan Bersih/Bulan</div><div class="r-value" id="resPendapatanKotor">-</div></div>
+          <div class="result-item"><div class="r-label">Cicilan/Bulan</div><div class="r-value yellow" id="resCicilan">-</div></div>
+          <div class="result-item"><div class="r-label">Sisa Penghasilan/Bulan</div><div class="r-value green" id="resBersih">-</div></div>
+          <div class="result-item"><div class="r-label">Cicilan Harian</div><div class="r-value yellow" id="resCicilanHarian">-</div></div>
+          <div class="result-item"><div class="r-label">Sisa/Hari</div><div class="r-value green" id="resBersihHarian">-</div></div>
+          <div class="result-item"><div class="r-label">Cicilan dari Pendapatan</div><div class="r-value" id="resPersen">-</div></div>
+        </div>
+        <div class="kalk-note" id="kalkNote">Estimasi sebelum biaya listrik harian sekitar Rp 15.000. Hemat 90% vs BBM.</div>
+      </div>
     </div>
+  </div>
+</section>
+
+<section id="cara-kerja" class="steps-section">
+  <div class="container">
+    <div class="section-title"><h2>Cara Kerja Program Kredit</h2></div>
+    <p class="section-subtitle">4 langkah mudah untuk memiliki kendaraan listrik sendiri</p>
     <div class="steps-grid">
-      <div class="step-card">
-        <div class="step-number">1</div>
-        <div class="step-icon">📝</div>
-        <h4>Daftar</h4>
-        <p>Isi formulir pendaftaran online dengan data diri dan dokumen persyaratan. Proses verifikasi 24 jam.</p>
-        <div class="step-arrow">→</div>
-      </div>
-      <div class="step-card">
-        <div class="step-number">2</div>
-        <div class="step-icon">💳</div>
-        <h4>Bayar DP</h4>
-        <p>Setelah disetujui, bayar uang muka sesuai paket yang dipilih. Bisa transfer bank atau dompet digital.</p>
-        <div class="step-arrow">→</div>
-      </div>
-      <div class="step-card">
-        <div class="step-number">3</div>
-        <div class="step-icon">🚗</div>
-        <h4>Terima Kendaraan</h4>
-        <p>Kendaraan diantar ke lokasi kamu atau ambil di depo terdekat. Lengkap dengan STNK dan asuransi.</p>
-        <div class="step-arrow">→</div>
-      </div>
-      <div class="step-card">
-        <div class="step-number">4</div>
-        <div class="step-icon">💰</div>
-        <h4>Kerja &amp; Cicil</h4>
-        <p>Mulai terima order. Cicilan dipotong otomatis dari pendapatan harian kamu. Makin rajin, makin cepat lunas!</p>
-      </div>
+      <div class="step-card"><div class="step-num">1</div><h3>Daftar &amp; Pilih Paket</h3><p>Isi formulir online, pilih paket kendaraan, dan unggah dokumen persyaratan. Proses verifikasi 1-2 hari kerja.</p></div>
+      <div class="step-card"><div class="step-num">2</div><h3>Survei &amp; Persetujuan</h3><p>Tim TemRide melakukan verifikasi identitas dan kelayakan. Persetujuan dalam 3 hari kerja setelah dokumen lengkap.</p></div>
+      <div class="step-card"><div class="step-num">3</div><h3>Bayar DP &amp; Ambil Kendaraan</h3><p>Setelah disetujui, bayar uang muka dan kendaraan langsung diserahterimakan di kantor TemRide Balikpapan atau Samarinda.</p></div>
+      <div class="step-card"><div class="step-num">4</div><h3>Beroperasi &amp; Cicil</h3><p>Mulai terima order, cicilan dipotong otomatis dari saldo pendapatanmu setiap bulan. Makin rajin kerja, makin cepat lunas!</p></div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════ SYARAT ══════════════ -->
-<section class="syarat-section" id="syarat">
+<section id="syarat" class="syarat-section">
   <div class="container">
-    <div class="section-header">
-      <div class="section-tag">Persyaratan</div>
-      <h2>Syarat Pengajuan Kredit</h2>
-      <p>Persyaratan mudah dan dapat dipenuhi oleh sebagian besar calon driver TemRide.</p>
-    </div>
+    <div class="section-title"><h2>Syarat &amp; Ketentuan Kredit</h2></div>
+    <p class="section-subtitle">Persyaratan mudah dan transparan tanpa biaya tersembunyi</p>
     <div class="syarat-grid">
-      <div class="syarat-item">
-        <div class="syarat-icon">🇮🇩</div>
-        <div class="syarat-text">
-          <h4>Warga Negara Indonesia</h4>
-          <p>Pemohon harus merupakan WNI dengan status kewarganegaraan aktif dan sah.</p>
-        </div>
+      <div class="syarat-card">
+        <h3>Dokumen Wajib</h3>
+        <ul>
+          <li>KTP asli (WNI, usia 18-55 tahun)</li>
+          <li>SIM C (motor) atau SIM A (mobil)</li>
+          <li>Kartu Keluarga (KK)</li>
+          <li>Foto selfie dengan KTP</li>
+          <li>Nomor HP aktif (WhatsApp)</li>
+          <li>Nomor rekening bank aktif</li>
+        </ul>
       </div>
-      <div class="syarat-item">
-        <div class="syarat-icon">🪪</div>
-        <div class="syarat-text">
-          <h4>Memiliki KTP Valid</h4>
-          <p>KTP elektronik yang masih berlaku dan sesuai dengan data pendaftaran driver.</p>
-        </div>
+      <div class="syarat-card">
+        <h3>Persyaratan Kelayakan</h3>
+        <ul>
+          <li>Berdomisili di Balikpapan atau Samarinda</li>
+          <li>Memiliki SIM yang berlaku</li>
+          <li>Tidak dalam status kredit macet</li>
+          <li>Bersedia ikut pelatihan driver 1 hari</li>
+          <li>Mengunduh dan aktif di aplikasi TemRide</li>
+          <li>Target minimal 4 jam kerja/hari</li>
+        </ul>
       </div>
-      <div class="syarat-item">
-        <div class="syarat-icon">🎂</div>
-        <div class="syarat-text">
-          <h4>Usia 21 – 55 Tahun</h4>
-          <p>Pemohon berusia minimal 21 tahun dan maksimal 55 tahun pada saat pengajuan kredit.</p>
-        </div>
+      <div class="syarat-card">
+        <h3>Ketentuan Keuangan</h3>
+        <ul>
+          <li>DP dibayar di muka saat serah terima</li>
+          <li>Cicilan dipotong otomatis dari pendapatan</li>
+          <li>Tidak ada bunga tersembunyi</li>
+          <li>Denda keterlambatan: Rp 50.000/hari</li>
+          <li>Pelunasan dipercepat: tanpa penalti</li>
+          <li>Asuransi kendaraan tahun 1: ditanggung TemRide</li>
+        </ul>
       </div>
-      <div class="syarat-item">
-        <div class="syarat-icon">✅</div>
-        <div class="syarat-text">
-          <h4>Tidak Masuk Blacklist OJK</h4>
-          <p>Tidak tercatat dalam daftar hitam OJK / SLIK dengan status kredit macet atau bermasalah.</p>
-        </div>
-      </div>
-      <div class="syarat-item">
-        <div class="syarat-icon">🛵</div>
-        <div class="syarat-text">
-          <h4>Minimum 8 Trip per Hari</h4>
-          <p>Aktif menyelesaikan minimal 8 perjalanan per hari untuk memastikan kemampuan membayar cicilan.</p>
-        </div>
+      <div class="syarat-card">
+        <h3>Ketentuan Operasional</h3>
+        <ul>
+          <li>Kendaraan hanya untuk operasi TemRide</li>
+          <li>Dilarang meminjamkan ke pihak lain</li>
+          <li>Wajib servis rutin setiap 3.000 km</li>
+          <li>Lapor kerusakan dalam 24 jam</li>
+          <li>Aktif minimal 20 hari/bulan</li>
+          <li>Pelanggaran berat: kontrak dapat diputus</li>
+        </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════ FAQ ══════════════ -->
-<section class="faq-section" id="faq">
+<section id="faq" class="faq-section">
   <div class="container">
-    <div class="section-header">
-      <div class="section-tag">FAQ</div>
-      <h2>Pertanyaan yang Sering Ditanyakan</h2>
-      <p>Temukan jawaban atas pertanyaan umum seputar program kredit kendaraan TemRide.</p>
-    </div>
-    <div class="faq-list">
-
+    <div class="section-title"><h2>Pertanyaan yang Sering Ditanyakan</h2></div>
+    <p class="section-subtitle">Temukan jawaban atas pertanyaanmu di sini</p>
+    <div class="faq-wrapper">
       <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          Apakah cicilan dipotong langsung dari pendapatan saya setiap hari?
-          <span class="faq-chevron">▾</span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">
-            Ya, cicilan dipotong secara otomatis dari pendapatan harian kamu setelah kamu menyelesaikan trip. Sistem akan memotong jumlah cicilan harian yang telah disepakati sebelum saldo dikirim ke akun kamu. Kamu tidak perlu repot transfer manual setiap bulan.
-          </div>
-        </div>
+        <button class="faq-question" onclick="toggleFaq(this)">Apakah saya bisa mengajukan kredit tanpa riwayat kredit sebelumnya?<span class="faq-icon">+</span></button>
+        <div class="faq-answer">Ya, TemRide tidak mensyaratkan riwayat kredit sebelumnya. Penilaian kelayakan kami didasarkan pada kesungguhan bekerja sebagai driver dan kelengkapan dokumen. Asalkan dokumen lengkap dan kamu berkomitmen bekerja aktif, peluang persetujuan sangat besar.</div>
       </div>
-
       <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          Apakah ada denda jika saya tidak mencapai 8 trip dalam sehari?
-          <span class="faq-chevron">▾</span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">
-            Tidak ada denda harian. Namun, kekurangan cicilan akan terakumulasi dan harus dilunasi pada periode berikutnya. Jika akumulasi keterlambatan melebihi 30 hari, akan ada pemberitahuan resmi dan kemungkinan peninjuan ulang perjanjian kredit. Kami sarankan konsisten memenuhi target trip minimum.
-          </div>
-        </div>
+        <button class="faq-question" onclick="toggleFaq(this)">Bagaimana jika saya tidak bisa bayar cicilan di bulan tertentu?<span class="faq-icon">+</span></button>
+        <div class="faq-answer">Hubungi tim TemRide minimal 3 hari sebelum tanggal jatuh tempo. Kami memiliki program restrukturisasi cicilan untuk driver yang mengalami kendala sementara. Kami lebih suka mencari solusi bersama dibanding mengambil kendaraan kembali.</div>
       </div>
-
       <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          Berapa lama proses persetujuan kredit?
-          <span class="faq-chevron">▾</span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">
-            Proses verifikasi dokumen membutuhkan waktu 1×24 jam kerja. Setelah semua dokumen lengkap dan valid, keputusan kredit akan diberikan dalam 24 jam. Jika disetujui, kamu dapat langsung membayar DP dan menjadwalkan pengambilan kendaraan.
-          </div>
-        </div>
+        <button class="faq-question" onclick="toggleFaq(this)">Bisakah kendaraan digunakan untuk keperluan pribadi di luar jam kerja?<span class="faq-icon">+</span></button>
+        <div class="faq-answer">Selama masa kredit, kendaraan dapat digunakan untuk keperluan pribadi di luar jam operasi TemRide. Namun dilarang disewakan ke pihak lain, digunakan sebagai ojek platform lain, atau dibawa ke luar kota tanpa izin. Setelah cicilan LUNAS, kendaraan sepenuhnya menjadi milikmu.</div>
       </div>
-
       <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          Apakah kendaraan sudah dilengkapi dengan asuransi?
-          <span class="faq-chevron">▾</span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">
-            Ya! Setiap kendaraan kredit TemRide dilengkapi dengan asuransi Total Loss Only (TLO) selama masa kredit berlangsung. Premi asuransi sudah termasuk dalam perhitungan cicilan. Untuk kerusakan ringan, kamu bisa memanfaatkan program servis gratis di bengkel rekanan TemRide.
-          </div>
-        </div>
+        <button class="faq-question" onclick="toggleFaq(this)">Berapa lama proses pengajuan hingga kendaraan diterima?<span class="faq-icon">+</span></button>
+        <div class="faq-answer">Proses total rata-rata 5-7 hari kerja: hari 1-2 verifikasi dokumen online, hari 3-4 survei dan persetujuan, hari 5 penandatanganan kontrak dan pembayaran DP, hari 6-7 serah terima kendaraan dan pelatihan driver. Jika dokumen lengkap, bisa lebih cepat hingga 3 hari kerja.</div>
       </div>
-
       <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          Apakah kendaraan bisa menjadi milik saya setelah cicilan lunas?
-          <span class="faq-chevron">▾</span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">
-            Tentu! Setelah seluruh cicilan lunas, kendaraan 100% menjadi milik kamu. BPKB dan STNK akan langsung dialihkan atas nama kamu. Kamu juga bebas memilih untuk tetap aktif sebagai driver TemRide atau menggunakan kendaraan untuk keperluan lain.
-          </div>
-        </div>
+        <button class="faq-question" onclick="toggleFaq(this)">Apa yang terjadi dengan kendaraan jika ada kecelakaan?<span class="faq-icon">+</span></button>
+        <div class="faq-answer">Selama tahun pertama, kendaraan dilindungi asuransi yang ditanggung TemRide. Untuk tahun ke-2 dan seterusnya, driver wajib membayar premi asuransi mandiri sekitar Rp 500.000-1.500.000 per tahun. Hubungi 0813-8305-8143 untuk klaim asuransi.</div>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ══════════════ CTA ══════════════ -->
 <section class="cta-section">
-  <div class="container">
-    <h2>Siap Miliki Kendaraan Listrikmu?</h2>
-    <p>Bergabung dengan ribuan driver TemRide yang sudah menikmati kemudahan kredit kendaraan. Daftar sekarang dan mulai perjalananmu!</p>
-    <a href="daftar-driver.html" class="btn btn-accent">🚀 Ajukan Kredit Sekarang</a>
+  <h2>Siap Punya Kendaraan Listrik Sendiri?</h2>
+  <p>Bergabunglah dengan 200+ driver TemRide yang sudah memiliki motor listrik dari penghasilan harian mereka sendiri</p>
+  <div class="cta-buttons">
+    <a href="daftar-driver.html" class="btn-cta-primary">Ajukan Kredit Sekarang</a>
+    <a href="https://wa.me/6281383058143?text=Halo%20TemRide%2C%20saya%20ingin%20tanya%20tentang%20kredit%20kendaraan%20listrik" class="btn-cta-wa">Tanya via WhatsApp</a>
   </div>
 </section>
 
-<!-- ══════════════ FOOTER ══════════════ -->
 <footer>
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <div class="nav-logo">
-        <div class="nav-logo-icon">⚡</div>
-        <span class="nav-logo-text">TemRide</span>
-      </div>
-      <p>Solusi Mobilitas Listrik Indonesia</p>
-    </div>
-    <div class="footer-links">
-      <a href="index.html">Beranda</a>
-      <a href="kredit-kendaraan.html">Kredit Kendaraan</a>
-      <a href="daftar-driver.html">Daftar Driver</a>
-    </div>
-    <p class="footer-copy">© 2026 PT Tridaya Elektra Mandiri. Seluruh hak cipta dilindungi undang-undang.</p>
-  </div>
+  <div class="footer-logo">Tem<span>Ride</span></div>
+  <p>Program Kredit Kendaraan Listrik oleh</p>
+  <p><strong style="color:#fff;">PT Tridaya Elektra Mandiri (PT TEM)</strong></p>
+  <p style="margin-top:0.5rem;">Balikpapan &amp; Samarinda, Kalimantan Timur</p>
+  <p style="margin-top:0.5rem;"><a href="tel:081383058143">0813-8305-8143</a> &nbsp;|&nbsp; <a href="mailto:PT.temengineering@gmail.com">PT.temengineering@gmail.com</a></p>
+  <p style="margin-top:1rem;">&copy; 2026 PT Tridaya Elektra Mandiri. Semua hak dilindungi.</p>
 </footer>
 
 <script>
-  // ─── NAVBAR TOGGLE ───
-  function toggleNav() {
-    const links = document.getElementById('navLinks');
-    links.classList.toggle('open');
+function formatRupiah(angka) {
+  return 'Rp ' + Math.round(angka).toLocaleString('id-ID');
+}
+function hitungCicilan() {
+  var cicilan = parseInt(document.getElementById('paketSelect').value);
+  var pendapatanHarian = parseFloat(document.getElementById('pendapatan').value) || 0;
+  var hariKerja = parseInt(document.getElementById('hariKerja').value);
+  var komisiPersen = parseInt(document.getElementById('komisi').value) / 100;
+  if (pendapatanHarian <= 0) { alert('Masukkan target pendapatan harian yang valid!'); return; }
+  var pendapatanKotor = pendapatanHarian * hariKerja;
+  var komisiPlatform = pendapatanKotor * komisiPersen;
+  var pendapatanSetelahKomisi = pendapatanKotor - komisiPlatform;
+  var bersihBulanan = pendapatanSetelahKomisi - cicilan;
+  var cicilanHarian = cicilan / hariKerja;
+  var bersihHarian = bersihBulanan / hariKerja;
+  var persenCicilan = (cicilan / pendapatanSetelahKomisi * 100).toFixed(1);
+  document.getElementById('resPendapatanKotor').textContent = formatRupiah(pendapatanSetelahKomisi);
+  document.getElementById('resCicilan').textContent = formatRupiah(cicilan);
+  document.getElementById('resBersih').textContent = formatRupiah(bersihBulanan);
+  document.getElementById('resCicilanHarian').textContent = formatRupiah(cicilanHarian);
+  document.getElementById('resBersihHarian').textContent = formatRupiah(bersihHarian);
+  document.getElementById('resPersen').textContent = persenCicilan + '%';
+  var note = document.getElementById('kalkNote');
+  if (bersihBulanan < 1000000) {
+    note.textContent = 'Pendapatan bersih cukup ketat. Pertimbangkan meningkatkan target harian atau pilih paket lebih rendah.';
+    note.style.color = '#ffd84d';
+  } else {
+    note.textContent = 'Estimasi sehat! Sudah termasuk potongan komisi. Biaya listrik harian sekitar Rp 15.000 (hemat 90% vs BBM).';
+    note.style.color = 'rgba(255,255,255,0.6)';
   }
-
-  // ─── FAQ ACCORDION ───
-  function toggleFaq(btn) {
-    const item = btn.parentElement;
-    const isOpen = item.classList.contains('open');
-    // close all
-    document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
-    // open clicked if was closed
-    if (!isOpen) item.classList.add('open');
-  }
-
-  // ─── KALKULATOR ───
-  const CICILAN = {
-    '26700': 26700,
-    '40000': 40000,
-    '116700': 116700
-  };
-
-  function formatRupiah(num) {
-    return 'Rp ' + Math.round(num).toLocaleString('id-ID');
-  }
-
-  function hitungPendapatan() {
-    const target = parseFloat(document.getElementById('targetPendapatan').value) || 0;
-    const paket  = document.getElementById('pilihanPaket').value;
-    const trip   = parseFloat(document.getElementById('jumlahTrip').value) || 0;
-
-    if (target <= 0 || !paket) {
-      alert('Harap isi target pendapatan dan pilih paket kredit terlebih dahulu.');
-      return;
-    }
-
-    const cicilHarian = CICILAN[paket];
-    const biayaOps    = target * 0.15;
-    const bersih      = target - cicilHarian - biayaOps;
-    const perBulan    = bersih * 30;
-
-    document.getElementById('res-gross').textContent  = formatRupiah(target);
-    document.getElementById('res-cicil').textContent  = '- ' + formatRupiah(cicilHarian);
-    document.getElementById('res-ops').textContent    = '- ' + formatRupiah(biayaOps);
-    document.getElementById('res-bersih').textContent = formatRupiah(Math.max(0, bersih));
-    document.getElementById('res-bulan').textContent  = formatRupiah(Math.max(0, perBulan));
-
-    const hasil = document.getElementById('hasilKalkulator');
-    hasil.classList.add('show');
-    hasil.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-
-  // ─── SMOOTH SCROLL for anchor links ───
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      const target = document.querySelector(a.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
-
-  // ─── Allow Enter key on calculator inputs ───
-  ['targetPendapatan', 'jumlahTrip'].forEach(id => {
-    document.getElementById(id).addEventListener('keydown', e => {
-      if (e.key === 'Enter') hitungPendapatan();
-    });
-  });
+  var result = document.getElementById('kalkResult');
+  result.classList.add('show');
+  result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function toggleFaq(btn) {
+  var answer = btn.nextElementSibling;
+  var isOpen = answer.classList.contains('open');
+  document.querySelectorAll('.faq-answer').forEach(function(a) { a.classList.remove('open'); });
+  document.querySelectorAll('.faq-question').forEach(function(b) { b.classList.remove('open'); });
+  if (!isOpen) { answer.classList.add('open'); btn.classList.add('open'); }
+}
+window.addEventListener('load', hitungCicilan);
 </script>
 </body>
 </html>
